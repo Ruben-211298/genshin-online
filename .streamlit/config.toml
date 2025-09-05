@@ -1,0 +1,7 @@
+[theme]
+base="dark"
+primaryColor="#a06cd5"   # violet like wish banners
+backgroundColor="#1e1e2e"
+secondaryBackgroundColor="#2e2e3e"
+textColor="#ffffff"
+font="monospace"
