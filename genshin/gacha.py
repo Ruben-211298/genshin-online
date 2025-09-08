@@ -683,6 +683,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
 
     pitty_4star_char = 10
     pitty_4star_weapon = 10
+    
 
     bargain_coins = 0.0
 
@@ -712,6 +713,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
         for n,element in enumerate(order):
             if tries > 0:
                 if element == 'character':
+                    i = 0 # The prob index multiplier of soft pitty
 
                     pre_promotional_characters = promotional_characters
                     gold = False
@@ -723,7 +725,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                             starting_pitty = pitty_character
 
                         # Nonpitty
-                        for t in range(starting_pitty,nonpitty_char_duration+1):
+                        for t in range(starting_pitty,nonpitty_char_duration):
                             luck = random()
                             tries = tries - 1
 
@@ -743,7 +745,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                                     bargain_coins -= 5.0
                                     tries += 1
 
-                            elif tries <= 0:
+                            if tries <= 0:
                                 break
                             else:
                                 continue
@@ -753,8 +755,9 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                             for t in range(nonpitty_char_duration, pitty_char_duration):
                                 luck = random()
                                 tries = tries - 1
+                                i += 1
 
-                                if luck <= prob_char_pitty:
+                                if luck <= prob_char_pitty*i+prob_char_nonpitty:
                                     characters = characters + 1
                                     gold = True
                                     break
@@ -770,7 +773,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                                         bargain_coins -= 5.0
                                         tries += 1
 
-                                elif tries <= 0:
+                                if tries <= 0:
                                     break
                                 else:
                                     continue
@@ -811,6 +814,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                                 fifty_character = True
 
                 elif element == 'weapon':
+                    i = 0 # The prob index multiplier of soft pitty
 
                     pre_promotional_weapons = promotional_weapons
                     gold = False
@@ -822,7 +826,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                             starting_pitty = pitty_weapon
 
                         # Nonpitty
-                        for t in range(starting_pitty,nonpitty_wpn_duration+1):
+                        for t in range(starting_pitty,nonpitty_wpn_duration):
                             luck = random()
                             tries = tries - 1
 
@@ -830,7 +834,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                                 weapons = weapons + 1
                                 gold = True
                                 break
-                            elif luck > prob_char_nonpitty:
+                            elif luck > prob_wpn_nonpitty:
                                 luck_4 = random()
                                 if luck_4 <= 0.1 or  pitty_4star_weapon == 10:
                                     bargain_coins += 2.5
@@ -842,7 +846,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                                     bargain_coins -= 5.0
                                     tries += 1
 
-                            elif tries <= 0:
+                            if tries <= 0:
                                 break
                             else:
                                 continue
@@ -852,12 +856,15 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                             for t in range(nonpitty_wpn_duration, pitty_wpn_duration):
                                 luck = random()
                                 tries = tries - 1
+                                i += 1
+                                #if str(m).endswith('000') and tries > 0:
+                                    #print(prob_wpn_pitty*i+prob_wpn_nonpitty)
 
-                                if luck <= prob_wpn_pitty:
+                                if luck <= prob_wpn_pitty*i+prob_wpn_nonpitty:
                                     weapons = weapons + 1
                                     gold = True
                                     break
-                                elif luck > prob_char_nonpitty:
+                                elif luck > prob_wpn_nonpitty:
                                     luck_4 = random()
                                     if luck_4 <= 0.1 or  pitty_4star_weapon == 10:
                                         bargain_coins += 2.5
@@ -869,7 +876,7 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                                         bargain_coins -= 5.0
                                         tries += 1
 
-                                elif tries <= 0:
+                                if tries <= 0:
                                     break
                                 else:
                                     continue
@@ -881,6 +888,8 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
 
                         #50/50 and Epitomized Path
                         if gold == True:
+                            # if str(m).endswith('000'):
+                                # print(t)
                             wpn_got = True
                             if fifty_weapon == True:
                                 luck_70 = random()
@@ -890,20 +899,32 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                                     luck_epitomized = random()
                                     if luck_epitomized < 0.500000 or epitomized == 1:
                                         promotional_weapons = promotional_weapons + 1
+                                        epitomized = 0
                                     else:
-                                        epitomized += 1
+                                        epitomized = 1
 
-                                elif luck_70 >= 0.700000:
+                                elif luck_70 >= 0.700000 and epitomized == 0:
                                     fifty_weapon = False
-                                    epitomized += 1
+                                    epitomized = 1
+                                
+                                else:
+                                    raise ValueError('error in epitomizer')
 
                             elif fifty_weapon == False:
                                 fifty_weapon = True
                                 luck_epitomized = random()
                                 if luck_epitomized < 0.500000 or epitomized == 1:
                                     promotional_weapons = promotional_weapons + 1
+                                    epitomized = 0
+                                elif luck_epitomized >= 0.500000 and epitomized == 0:
+                                    epitomized = 1
                                 else:
-                                    epitomized += 1
+                                    raise ValueError('error in epitomizer')
+                        # else:
+                            # if tries > 0:
+                                # print(tries)
+                        # if str(m).endswith('000') and tries > 0:
+                        #         print(promotional_weapons, epitomized)
 
                 else:
                     raise ValueError('In order list select either character or weapon')
@@ -914,5 +935,6 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
                     dens_prob_Promotional_order[n+1] += 1
                 elif promotional_characters == 0 and promotional_weapons == 0:
                     dens_prob_Promotional_order[0] += 1
-
+        # if str(m).endswith('000'):
+        #     print('-----')
     return dens_prob_Promotional_order
