@@ -42,6 +42,8 @@ def datesMatrix(final_day,Currently_primos,Battle_Pass=True,Battle_Pass_Premium=
     actualization = 600
     bannerreset = 40
     wish = 160
+    main_event = 1100
+    secondary_event = 450
 
     dates_of_new_versions = []
     dates_of_banner_reset = []
@@ -68,6 +70,10 @@ def datesMatrix(final_day,Currently_primos,Battle_Pass=True,Battle_Pass_Premium=
             primogems_promotional += actualization
         if day in important_dates('banner_reset',final_day):
             primogems_promotional += bannerreset
+        if day in important_dates('main_event', final_day):
+            primogems_promotional += main_event
+        if day in important_dates('secondary_event', final_day):
+            primogems_promotional += secondary_event
 
         if Battle_Pass == True:
             if day in days_battlePass:
@@ -160,6 +166,14 @@ def important_dates(what,final_day):
         num_weeks = 6
         week_day = 4
         start_date = start_date - datetime.timedelta(days=12)
+    elif what == 'main_event':
+        num_weeks = 6
+        week_day = 6
+        start_date = start_date + datetime.timedelta(days=7)
+    elif what == 'secondary_event':
+        num_weeks = 2
+        week_day = 4
+        start_date = start_date + datetime.timedelta(days=7)
 
     while start_date.date() <= end_date:
         important_date = 0
