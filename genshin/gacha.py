@@ -698,8 +698,8 @@ def full_5star_wishing(wishes, total_simulations, current_pitty, fifty_origin, o
         promotional_characters = 0
         weapons = 0
         promotional_weapons = 0
-        fifty_character = fifty_origin[0]
-        fifty_weapon = fifty_origin[1]
+        fifty_character = not fifty_origin[0]
+        fifty_weapon = not fifty_origin[1]
         epitomized = 0
         pre_promotional_characters = 0
         pre_promotional_weapons = 0
