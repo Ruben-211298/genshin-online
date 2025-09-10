@@ -107,8 +107,8 @@ with st.sidebar:
         tries = st.number_input(
             "Monte Carlo Tries",
             min_value=1000,
-            max_value=1000000,
-            value=100000,
+            max_value=100000,
+            value=20000,
             step=1000,
             help="Number of random simulations used to estimate probabilities (higher = more accurate but slower)."
         )
@@ -136,7 +136,7 @@ if st.button("✨ Calculate!"):
 
     
     with st.spinner("Calculating probabilities... ✨"):
-        gold_num_prob_output = genshin.gacha.full_5star_wishing(
+        gold_num_prob_output = genshin.gacha_simulator.full_5star_wishing(
             final_wishes,
             tries,
             current_pity,
